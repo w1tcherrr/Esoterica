@@ -30,6 +30,10 @@ namespace EE::Serialization
     constexpr static char const* const g_propertyArrayIdxAttrName = "Index";
     constexpr static char const* const g_propertyValueAttrName = "Value";
 
+    // Whether to write properties whose value matches the type default. Valve graphs spell every
+    // property out and their defaults do not always match ours, so this defaults to on here.
+    EE_BASE_API extern bool g_writeDefaultPropertyValues;
+
     // Type Descriptors
     //-------------------------------------------------------------------------
 

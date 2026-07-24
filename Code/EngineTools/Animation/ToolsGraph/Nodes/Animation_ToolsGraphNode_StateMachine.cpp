@@ -509,6 +509,14 @@ namespace EE::Animation
                 pDefinition->m_transitionOptions.SetFlag( TransitionNode::TransitionOptions::PreferClosestSyncEventID, true );
             }
             break;
+
+            // Valve only modes, we have no runtime equivalent so they behave as a plain time match
+            case TransitionToolsNode::TimeMatchMode::MatchTimeInSeconds:
+            case TransitionToolsNode::TimeMatchMode::OffsetTimeInSeconds:
+            {
+                pDefinition->m_transitionOptions.SetFlag( TransitionNode::TransitionOptions::MatchSourceTime, true );
+            }
+            break;
         }
 
         //-------------------------------------------------------------------------

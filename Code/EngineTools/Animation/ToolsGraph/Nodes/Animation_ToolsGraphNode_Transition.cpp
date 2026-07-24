@@ -108,6 +108,18 @@ namespace EE::Animation
                 ImGui::Text( "Match Sync %% Only" );
             }
             break;
+
+            case TimeMatchMode::MatchTimeInSeconds:
+            {
+                ImGui::Text( "Match Time" );
+            }
+            break;
+
+            case TimeMatchMode::OffsetTimeInSeconds:
+            {
+                ImGui::Text( "Offset Time" );
+            }
+            break;
         }
 
         ImGui::Text( "Sync Offset: %.2f", m_syncEventOffset );

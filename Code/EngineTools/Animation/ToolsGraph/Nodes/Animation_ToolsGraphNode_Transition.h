@@ -40,6 +40,10 @@ namespace EE::Animation
             MatchClosestSyncEventID,
             MatchSyncEventIDAndPercentage,
             MatchClosestSyncEventIDAndPercentage,
+
+            // Valve only modes
+            MatchTimeInSeconds,
+            OffsetTimeInSeconds,
         };
 
     public:

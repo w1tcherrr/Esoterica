@@ -706,7 +706,8 @@ namespace EE::Animation
         {
             NodeGraph::Pin* pInputPin = GetInputPin( i );
             Option const& option = m_options[i];
-            pInputPin->m_name.sprintf( "%s (%.2f)", option.m_name.empty() ? "Input" : option.m_name.c_str(), option.m_value );
+            // Valve writes the value with %g, so matching it keeps imported pin names untouched
+            pInputPin->m_name.sprintf( "%s (%g)", option.m_name.empty() ? "Input" : option.m_name.c_str(), option.m_value );
         }
     }
 

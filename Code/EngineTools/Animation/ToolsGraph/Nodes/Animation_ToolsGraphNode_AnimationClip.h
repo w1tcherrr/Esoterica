@@ -32,6 +32,12 @@ namespace EE::Animation
 
     public:
 
+        // Events Valve raises from this clip, kept so a load/save cycle preserves them.
+        EE_REFLECT( Hidden );
+        TVector<StringID>                               m_graphEvents;
+
+    public:
+
         AnimationClipToolsNode();
 
         virtual bool IsAnimationClipReferenceNode() const override { return true; }

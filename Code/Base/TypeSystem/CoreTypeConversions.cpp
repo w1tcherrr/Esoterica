@@ -15,6 +15,7 @@
 #include "Base/Math/NumericRange.h"
 
 #include "EnumInfo.h"
+#include <charconv>
 
 //-------------------------------------------------------------------------
 
@@ -52,7 +53,10 @@ namespace EE::TypeSystem::Conversion
 
         for ( int32_t i = 0; i < numFloats; i++ )
         {
-            strValue.append_sprintf( "%g", pFloats[i] );
+            // Shortest text that reads back as the same value, %g silently rounds
+            char buffer[32];
+            auto const conversion = std::to_chars( buffer, buffer + sizeof( buffer ), pFloats[i] );
+            strValue.append( buffer, conversion.ptr );
 
             if ( i != ( numFloats - 1 ) )
             {
@@ -810,13 +814,18 @@ namespace EE::TypeSystem::Conversion
 
                 case CoreTypeID::Float:
                 {
-                    strValue.sprintf( "%g", *reinterpret_cast<float const*>( pValue ) );
+                    // Shortest text that reads back as the same value, %g silently rounds
+                    char buffer[32];
+                    auto const conversion = std::to_chars( buffer, buffer + sizeof( buffer ), *reinterpret_cast<float const*>( pValue ) );
+                    strValue.assign( buffer, conversion.ptr );
                 }
                 break;
 
                 case CoreTypeID::Double:
                 {
-                    strValue.sprintf( "%g", *reinterpret_cast<double const*>( pValue ) );
+                    char buffer[32];
+                    auto const conversion = std::to_chars( buffer, buffer + sizeof( buffer ), *reinterpret_cast<double const*>( pValue ) );
+                    strValue.assign( buffer, conversion.ptr );
                 }
                 break;
 

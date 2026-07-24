@@ -8,6 +8,7 @@
 #include "Base/TypeSystem/TypeInstance.h"
 #include "EngineTools/Core/Test/Component_SerializationTest.h"
 #include "EngineTools/Entity/EntitySerializationTools.h"
+#include "EngineTools/Animation/ResourceDescriptors/ResourceDescriptor_AnimationGraph.h"
 
 #include <iostream>
 
@@ -17,8 +18,18 @@ using namespace EE;
 
 //-------------------------------------------------------------------------
 
+// Reads an animation graph descriptor and writes it straight back out, which is the load/save path
+// the graph editor uses. Converted Valve graphs are expected to survive it unchanged.
 int main( int argc, char *argv[] )
 {
+    if ( argc < 3 )
+    {
+        std::cout << "usage: Esoterica.Applications.Tester <input.ag> <output.ag>" << std::endl;
+        return 1;
+    }
+
+    int result = 0;
+
     {
         EE::ApplicationGlobalState State;
         TypeSystem::TypeRegistry typeRegistry;
@@ -26,10 +37,53 @@ int main( int argc, char *argv[] )
 
         //-------------------------------------------------------------------------
 
+        FileSystem::Path const inputPath( argv[1] );
+        FileSystem::Path const outputPath( argv[2] );
+
+        auto RoundTripFile = [&] ( FileSystem::Path const& source, FileSystem::Path const& destination )
+        {
+            Animation::GraphResourceDescriptor descriptor;
+
+            if ( !Resource::ResourceDescriptor::TryReadFromFile( typeRegistry, source, descriptor ) )
+            {
+                std::cout << "failed to read: " << source.c_str() << std::endl;
+                result = 1;
+                return;
+            }
+
+            if ( !Resource::ResourceDescriptor::TryWriteToFile( typeRegistry, destination, &descriptor ) )
+            {
+                std::cout << "failed to write: " << destination.c_str() << std::endl;
+                result = 1;
+            }
+        };
+
+        if ( inputPath.IsDirectoryPath() )
+        {
+            TVector<FileSystem::Path> foundPaths;
+            FileSystem::GetDirectoryContents( inputPath, foundPaths, FileSystem::DirectoryReaderOutput::OnlyFiles, FileSystem::DirectoryReaderMode::Recursive, { "ag" } );
+
+            int32_t count = 0;
+            for ( FileSystem::Path const& source : foundPaths )
+            {
+                FileSystem::Path destination = outputPath;
+                destination.Append( source.GetString().substr( inputPath.GetString().length() ).c_str() );
+                destination.EnsureDirectoryExists();
+                RoundTripFile( source, destination );
+                count++;
+            }
+
+            std::cout << "round tripped " << count << " graphs" << std::endl;
+        }
+        else
+        {
+            RoundTripFile( inputPath, outputPath );
+        }
+
         //-------------------------------------------------------------------------
 
         TypeSystem::Reflection::UnregisterTypes( typeRegistry );
     }
 
-    return 0;
+    return result;
 }

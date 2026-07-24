@@ -371,6 +371,10 @@ namespace EE::Serialization
 
     //-------------------------------------------------------------------------
 
+    bool g_writeDefaultPropertyValues = true;
+
+    //-------------------------------------------------------------------------
+
     struct NativeTypeWriterXml
     {
         static xml_node WriteType( TypeRegistry const& typeRegistry, xml_node parentNode, String& scratchBuffer, TypeID typeID, IReflectedType const* pTypeInstance )
@@ -391,7 +395,9 @@ namespace EE::Serialization
             for ( PropertyInfo const& propInfo : pTypeInfo->m_properties )
             {
                 // Skip default value properties
-                if ( pTypeInfo->IsPropertyValueSetToDefault( pTypeInstance, propInfo.m_ID ) )
+                // Valve graphs spell out every property, and their compiler defaults do not always
+                // match ours, so dropping them here would silently change the authored graph.
+                if ( !g_writeDefaultPropertyValues && pTypeInfo->IsPropertyValueSetToDefault( pTypeInstance, propInfo.m_ID ) )
                 {
                     continue;
                 }

@@ -143,7 +143,8 @@ namespace EE::Animation
         {
             NodeGraph::Pin* pInputPin = GetInputPin( i );
             BlendSpacePoint const& point = m_blendSpace[i - 1];
-            pInputPin->m_name.sprintf( "%s (%.2f)", point.m_name.empty() ? "Input" : point.m_name.c_str(), point.m_value );
+            // Valve writes the value with %g, so matching it keeps imported pin names untouched
+            pInputPin->m_name.sprintf( "%s (%g)", point.m_name.empty() ? "Input" : point.m_name.c_str(), point.m_value );
         }
     }
 

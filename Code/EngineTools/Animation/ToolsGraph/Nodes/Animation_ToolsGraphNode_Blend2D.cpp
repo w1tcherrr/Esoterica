@@ -429,7 +429,8 @@ namespace EE::Animation
             NodeGraph::Pin* pInputPin = GetInputPin( i );
             int32_t const pointIdx = i - 2;
             String const& pointID = m_blendSpace.m_pointIDs[pointIdx];
-            pInputPin->m_name.sprintf( "%s (%.2f, %.2f)", pointID.empty() ? "Input" : pointID.c_str(), m_blendSpace.m_points[pointIdx].m_x, m_blendSpace.m_points[pointIdx].m_y );
+            // Valve writes the values with %g, so matching it keeps imported pin names untouched
+            pInputPin->m_name.sprintf( "%s (%g, %g)", pointID.empty() ? "Input" : pointID.c_str(), m_blendSpace.m_points[pointIdx].m_x, m_blendSpace.m_points[pointIdx].m_y );
         }
     }
 }
