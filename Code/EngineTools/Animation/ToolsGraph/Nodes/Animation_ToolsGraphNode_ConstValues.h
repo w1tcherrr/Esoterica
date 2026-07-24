@@ -1,5 +1,6 @@
 #pragma once
 #include "Animation_ToolsGraphNode.h"
+#include "Animation_ToolsGraphNode_VariationData.h"
 
 //-------------------------------------------------------------------------
 
@@ -130,5 +131,38 @@ namespace EE::Animation
     private:
 
         EE_REFLECT() StringID m_boneName;
+    };
+
+    //-------------------------------------------------------------------------
+
+    // A constant float whose value is authored per variation.
+    class VariationFloatToolsNode final : public VariationDataToolsNode
+    {
+        EE_REFLECT_TYPE( VariationFloatToolsNode );
+
+    public:
+
+        struct Data final : public VariationDataToolsNode::Data
+        {
+            EE_REFLECT_TYPE( Data );
+
+        public:
+
+            EE_REFLECT();
+            float               m_flValue = 0.0f;
+        };
+
+    public:
+
+        VariationFloatToolsNode();
+
+        virtual char const* GetTypeName() const override { return "Variation Float"; }
+        virtual char const* GetCategory() const override { return "Animation/Compatibility"; }
+        virtual TBitFlags<GraphType> GetAllowedParentGraphTypes() const override { return TBitFlags<GraphType>( GraphType::BlendTree, GraphType::ValueTree, GraphType::TransitionConduit ); }
+        virtual int16_t Compile( GraphCompilationContext& context ) const override;
+
+    private:
+
+        virtual TypeSystem::TypeInfo const* GetVariationDataTypeInfo() const override { return VariationFloatToolsNode::Data::s_pTypeInfo; }
     };
 }

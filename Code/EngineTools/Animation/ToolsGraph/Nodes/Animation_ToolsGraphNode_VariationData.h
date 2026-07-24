@@ -91,5 +91,9 @@ namespace EE::Animation
 
         EE_REFLECT( Hidden );
         TVector<OverrideValue>              m_overrides;
+
+        // Valve names the resource the slot falls back to; kept so a save preserves it.
+        EE_REFLECT( Hidden );
+        String                              m_defaultResourceName;
     };
 }

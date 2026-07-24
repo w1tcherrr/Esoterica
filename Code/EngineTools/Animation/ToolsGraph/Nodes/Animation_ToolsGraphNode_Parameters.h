@@ -61,6 +61,12 @@ namespace EE::Animation
         virtual bool IsPersistentNode() const override { return true; }
 
         virtual void ReflectPreviewValues( ControlParameterToolsNode const* pOtherParameterNode ) {}
+
+    protected:
+
+        // Valve binds parameters to an ID dictionary entry; kept so the binding survives a save.
+        EE_REFLECT( Hidden );
+        UUID                            m_dictionaryParameterBinding;
     };
 
     //-------------------------------------------------------------------------

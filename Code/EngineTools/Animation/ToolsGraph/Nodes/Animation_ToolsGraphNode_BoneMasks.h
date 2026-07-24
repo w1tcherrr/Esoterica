@@ -20,10 +20,33 @@ namespace EE::Animation
         virtual int16_t Compile( GraphCompilationContext& context ) const override;
         virtual void DrawInfoText( NodeGraph::DrawContext const& ctx, NodeGraph::UserContext* pUserContext ) override;
 
+    public:
+
+        // Valve authors an override mask per variation.
+        struct Data final : public VariationDataToolsNode::Data
+        {
+            EE_REFLECT_TYPE( Data );
+
+        public:
+
+            EE_REFLECT( CustomEditor = "AnimGraph_BoneMaskID" );
+            StringID                           m_overrideMaskID;
+        };
+
     private:
 
         EE_REFLECT( CustomEditor = "AnimGraph_BoneMaskID" );
         StringID                               m_maskID;
+
+        // Kept so the per-variation payload survives a load/save cycle.
+        EE_REFLECT( Hidden );
+        TTypeInstance<VariationDataToolsNode::Data>    m_defaultVariationData;
+
+        EE_REFLECT( Hidden );
+        TVector<VariationDataToolsNode::OverrideValue> m_overrides;
+
+        EE_REFLECT( Hidden );
+        String                                 m_defaultResourceName;
     };
 
     //-------------------------------------------------------------------------

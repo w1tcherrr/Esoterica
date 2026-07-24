@@ -59,5 +59,12 @@ namespace EE::Animation
 
         EE_REFLECT()
         VariationHierarchy                                              m_variationHierarchy;
+
+        // Valve document level data, kept so a load/save cycle preserves it.
+        EE_REFLECT( Hidden )
+        TVector<String>                                                 m_debugParameterSets;
+
+        EE_REFLECT( Hidden )
+        TVector<StringID>                                               m_dictionaryIDSetIDs;
     };
 }

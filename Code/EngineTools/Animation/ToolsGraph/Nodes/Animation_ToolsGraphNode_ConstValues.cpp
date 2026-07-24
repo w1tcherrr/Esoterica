@@ -154,4 +154,18 @@ namespace EE::Animation
         DrawTargetInfoText( ctx, Target( m_boneName ) );
         EndDrawInternalRegion( ctx );
     }
+
+    //-------------------------------------------------------------------------
+
+    VariationFloatToolsNode::VariationFloatToolsNode()
+        : VariationDataToolsNode()
+    {
+        CreateOutputPin( "Value", GraphValueType::Float, true );
+    }
+
+    int16_t VariationFloatToolsNode::Compile( GraphCompilationContext& context ) const
+    {
+        context.LogError( this, "Variation Float is a compatibility node and has no runtime equivalent!" );
+        return InvalidIndex;
+    }
 }

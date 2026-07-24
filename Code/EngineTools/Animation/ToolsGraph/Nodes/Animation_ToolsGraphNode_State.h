@@ -47,6 +47,43 @@ namespace EE::Animation
             Seconds                  m_timeValue;
         };
 
+        // Valve keeps one list of state events with per-phase flags instead of a list per phase.
+        struct StateEvent : public IReflectedType
+        {
+            EE_REFLECT_TYPE( StateEvent );
+
+            EE_REFLECT( CustomEditor = "AnimGraph_ID" );
+            StringID                 m_ID;
+
+            EE_REFLECT();
+            bool                     m_bIsEntry = false;
+
+            EE_REFLECT();
+            bool                     m_bIsExit = false;
+
+            EE_REFLECT();
+            bool                     m_bIsFullyInState = false;
+        };
+
+        // Valve's timed events carry their own comparison and phase instead of living in two lists.
+        struct ValveTimedStateEvent : public IReflectedType
+        {
+            EE_REFLECT_TYPE( ValveTimedStateEvent );
+
+            EE_REFLECT( CustomEditor = "AnimGraph_ID" );
+            StringID                 m_ID;
+
+            // Valve stores these as enums, but for compatibility loading we only need the tokens.
+            EE_REFLECT();
+            StringID                 m_comparisonOperator;
+
+            EE_REFLECT();
+            StringID                 m_type;
+
+            EE_REFLECT();
+            Seconds                  m_flTimeValueSeconds = 0.0f;
+        };
+
     public:
 
         enum class StateType
@@ -76,6 +113,21 @@ namespace EE::Animation
 
         // Rename any logic or event IDs entered into this node (things like event IDs, parameter ID values, etc...)
         virtual void RenameLogicAndEventIDs( StringID oldID, StringID newID );
+
+    private:
+
+        // Valve compatibility state data, kept so a load/save cycle preserves it.
+        EE_REFLECT( Hidden );
+        UUID                         m_cloneSourceStateID;
+
+        EE_REFLECT( Hidden );
+        TVector<StateEvent>          m_stateEvents;
+
+        EE_REFLECT( Hidden );
+        TVector<ValveTimedStateEvent> m_timedStateEvents;
+
+        EE_REFLECT( Hidden );
+        bool                         m_bUseActualElapsedTimeInStateForTimedEvents = false;
 
     private:
 

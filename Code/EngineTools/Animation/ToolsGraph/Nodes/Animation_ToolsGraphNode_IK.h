@@ -174,4 +174,50 @@ namespace EE::Animation
         virtual TBitFlags<GraphType> GetAllowedParentGraphTypes() const override { return TBitFlags<GraphType>( GraphType::BlendTree ); }
         virtual int16_t Compile( GraphCompilationContext& context ) const override;
     };
+
+    //-------------------------------------------------------------------------
+
+    class ChainLookatToolsNode final : public VariationDataToolsNode
+    {
+        EE_REFLECT_TYPE( ChainLookatToolsNode );
+
+    public:
+
+        struct Data final : public VariationDataToolsNode::Data
+        {
+            EE_REFLECT_TYPE( Data );
+
+        public:
+
+            EE_REFLECT();
+            StringID                            m_chainEndBoneName;
+
+            EE_REFLECT();
+            Float3                              m_chainForwardDir = Float3( 1.0f, 0.0f, 0.0f );
+
+            EE_REFLECT();
+            int32_t                             m_nChainLength = 0;
+
+            EE_REFLECT();
+            Seconds                             m_flBlendTimeSeconds = 0.0f;
+        };
+
+    public:
+
+        ChainLookatToolsNode();
+
+        virtual char const* GetTypeName() const override { return "Chain Lookat"; }
+        virtual char const* GetCategory() const override { return "Animation/Compatibility"; }
+        virtual TBitFlags<GraphType> GetAllowedParentGraphTypes() const override { return TBitFlags<GraphType>( GraphType::BlendTree ); }
+        virtual int16_t Compile( GraphCompilationContext& context ) const override;
+
+    private:
+
+        virtual TypeSystem::TypeInfo const* GetVariationDataTypeInfo() const override { return ChainLookatToolsNode::Data::s_pTypeInfo; }
+
+    private:
+
+        EE_REFLECT();
+        bool                                   m_isTargetInWorldSpace = false;
+    };
 }

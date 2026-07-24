@@ -82,6 +82,9 @@ namespace EE::Animation
 
         EE_REFLECT();
         Percentage                                    m_boneMaskBlendInTimePercentage = 0.33f; // How long do we take to blend to the masked target before blending out the bone mask (a percentage of the transition duration)
+
+        EE_REFLECT();
+        float                                         m_timeOffset = 0.0f; // Valve applies this offset to the target node start time on top of the sync event offset
     };
 
     //-------------------------------------------------------------------------

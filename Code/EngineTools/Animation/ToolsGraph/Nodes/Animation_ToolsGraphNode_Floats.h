@@ -102,6 +102,21 @@ namespace EE::Animation
 
     public:
 
+        // Valve has five tangent modes per side where our curve only has two, so the authored tokens
+        // are kept alongside the curve rather than being flattened into it.
+        struct ValveTangent : public IReflectedType
+        {
+            EE_REFLECT_TYPE( ValveTangent );
+
+            EE_REFLECT();
+            StringID                              m_nIncomingTangent;
+
+            EE_REFLECT();
+            StringID                              m_nOutgoingTangent;
+        };
+
+    public:
+
         FloatCurveToolsNode();
 
         virtual char const* GetTypeName() const override { return "Float Curve"; }
@@ -112,6 +127,16 @@ namespace EE::Animation
     public:
 
         EE_REFLECT() FloatCurve                   m_curve;
+
+        // Valve authors the curve domain explicitly instead of deriving it from the points.
+        EE_REFLECT( Hidden );
+        TVector<ValveTangent>                     m_valveTangents;
+
+        EE_REFLECT( Hidden );
+        Float2                                    m_valveDomainMins = Float2::Zero;
+
+        EE_REFLECT( Hidden );
+        Float2                                    m_valveDomainMaxs = Float2::Zero;
     };
 
     //-------------------------------------------------------------------------
@@ -133,6 +158,7 @@ namespace EE::Animation
     public:
 
         EE_REFLECT() bool                       m_returnAbsoluteResult = false;
+        EE_REFLECT() bool                       m_returnNegatedResult = false;
         EE_REFLECT() FloatMathNode::Operator    m_operator = FloatMathNode::Operator::Add;
         EE_REFLECT() float                      m_valueB = 0.0f;
     };
@@ -196,6 +222,15 @@ namespace EE::Animation
         virtual char const* GetCategory() const override { return "Values/Float"; }
         virtual TBitFlags<GraphType> GetAllowedParentGraphTypes() const override { return TBitFlags<GraphType>( GraphType::BlendTree, GraphType::ValueTree, GraphType::TransitionConduit ); }
         virtual int16_t Compile( GraphCompilationContext& context ) const override;
+
+    private:
+
+        // Valve drives the switch from constants rather than input pins, so both values are stored here.
+        EE_REFLECT();
+        float                       m_flTrueValue = 0.0f;
+
+        EE_REFLECT();
+        float                       m_flFalseValue = 0.0f;
     };
 
     //-------------------------------------------------------------------------

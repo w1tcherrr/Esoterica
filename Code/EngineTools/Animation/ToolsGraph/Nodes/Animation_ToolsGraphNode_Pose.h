@@ -52,6 +52,9 @@ namespace EE::Animation
 
             EE_REFLECT();
             TResourcePtr<AnimationClip>     m_animClip;
+
+            EE_REFLECT();
+            float                           m_variationTimeValue = -1.0f; // Valve authors the sampled time per variation, -1 means use the time input
         };
 
     public:

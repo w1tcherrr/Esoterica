@@ -20,6 +20,9 @@ namespace EE::Animation
 
             EE_REFLECT();
             StringID            m_effectorBoneID;
+
+            EE_REFLECT();
+            Seconds             m_flBlendTimeSeconds = 0.0f;
         };
 
     public:
@@ -41,5 +44,12 @@ namespace EE::Animation
 
         EE_REFLECT();
         bool                m_isTargetInWorldSpace = false;
+
+        // Valve stores this as an enum, but for compatibility loading we only need to preserve the token.
+        EE_REFLECT();
+        StringID            m_blendMode;
+
+        EE_REFLECT();
+        float               m_flChainRotationWeight = 0.0f;
     };
 }

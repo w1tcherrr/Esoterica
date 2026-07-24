@@ -308,4 +308,34 @@ namespace EE::Animation
 
         return pDefinition->m_nodeIdx;
     }
+
+    //-------------------------------------------------------------------------
+
+    IDSelectorToolsNode::IDSelectorToolsNode()
+        : FlowToolsNode()
+    {
+        CreateOutputPin( "Result", GraphValueType::ID, true );
+        CreateInputPin( "Option 0", GraphValueType::Bool );
+    }
+
+    int16_t IDSelectorToolsNode::Compile( GraphCompilationContext& context ) const
+    {
+        context.LogError( this, "Dynamic ID Selector is a compatibility node and has no runtime equivalent!" );
+        return InvalidIndex;
+    }
+
+    //-------------------------------------------------------------------------
+
+    VariationIDComparisonToolsNode::VariationIDComparisonToolsNode()
+        : VariationDataToolsNode()
+    {
+        CreateOutputPin( "Result", GraphValueType::Bool, true );
+        CreateInputPin( "ID", GraphValueType::ID );
+    }
+
+    int16_t VariationIDComparisonToolsNode::Compile( GraphCompilationContext& context ) const
+    {
+        context.LogError( this, "Variation ID Comparison is a compatibility node and has no runtime equivalent!" );
+        return InvalidIndex;
+    }
 }

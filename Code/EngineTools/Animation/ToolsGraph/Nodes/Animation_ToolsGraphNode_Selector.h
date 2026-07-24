@@ -175,6 +175,19 @@ namespace EE::Animation
 
     public:
 
+        // Valve authors the option weights per variation rather than on the node itself.
+        struct Data final : public VariationDataToolsNode::Data
+        {
+            EE_REFLECT_TYPE( Data );
+
+        public:
+
+            EE_REFLECT( ShowAsStaticArray );
+            TVector<uint8_t>            m_optionWeights;
+        };
+
+    public:
+
         ParameterizedSelectorToolsNode();
 
     private:
@@ -202,6 +215,19 @@ namespace EE::Animation
 
         EE_REFLECT( ShowAsStaticArray );
         TVector<uint8_t>            m_optionWeights;
+
+        EE_REFLECT();
+        bool                        m_bIgnoreInvalidOptions = false;
+
+        // Kept so the per-variation payload survives a load/save cycle.
+        EE_REFLECT( Hidden );
+        TTypeInstance<VariationDataToolsNode::Data>      m_defaultVariationData;
+
+        EE_REFLECT( Hidden );
+        TVector<VariationDataToolsNode::OverrideValue>   m_overrides;
+
+        EE_REFLECT( Hidden );
+        String                      m_defaultResourceName;
     };
 
     //-------------------------------------------------------------------------
@@ -209,6 +235,19 @@ namespace EE::Animation
     class ParameterizedAnimationClipSelectorToolsNode final : public FlowToolsNode
     {
         EE_REFLECT_TYPE( ParameterizedAnimationClipSelectorToolsNode );
+
+    public:
+
+        // Valve authors the option weights per variation rather than on the node itself.
+        struct Data final : public VariationDataToolsNode::Data
+        {
+            EE_REFLECT_TYPE( Data );
+
+        public:
+
+            EE_REFLECT( ShowAsStaticArray );
+            TVector<uint8_t>            m_optionWeights;
+        };
 
     public:
 
@@ -241,5 +280,18 @@ namespace EE::Animation
 
         EE_REFLECT( ShowAsStaticArray );
         TVector<uint8_t>            m_optionWeights;
+
+        EE_REFLECT();
+        bool                        m_bIgnoreInvalidOptions = false;
+
+        // Kept so the per-variation payload survives a load/save cycle.
+        EE_REFLECT( Hidden );
+        TTypeInstance<VariationDataToolsNode::Data>      m_defaultVariationData;
+
+        EE_REFLECT( Hidden );
+        TVector<VariationDataToolsNode::OverrideValue>   m_overrides;
+
+        EE_REFLECT( Hidden );
+        String                      m_defaultResourceName;
     };
 }

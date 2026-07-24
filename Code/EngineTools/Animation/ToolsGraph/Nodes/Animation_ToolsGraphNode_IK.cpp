@@ -196,4 +196,27 @@ namespace EE::Animation
         context.LogError( this, "Disconnected input pin on compatibility Snap Weapon node!" );
         return InvalidIndex;
     }
+
+    //-------------------------------------------------------------------------
+
+    ChainLookatToolsNode::ChainLookatToolsNode()
+        : VariationDataToolsNode()
+    {
+        CreateOutputPin( "Result", GraphValueType::Pose, true );
+        CreateInputPin( "Input", GraphValueType::Pose );
+        CreateInputPin( "Target", GraphValueType::Target );
+        CreateInputPin( "Weight", GraphValueType::Float );
+    }
+
+    int16_t ChainLookatToolsNode::Compile( GraphCompilationContext& context ) const
+    {
+        auto pInputNode = GetConnectedInputNode<FlowToolsNode>( 0 );
+        if ( pInputNode != nullptr )
+        {
+            return pInputNode->Compile( context );
+        }
+
+        context.LogError( this, "Disconnected input pin on compatibility Chain Lookat node!" );
+        return InvalidIndex;
+    }
 }

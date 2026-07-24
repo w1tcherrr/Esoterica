@@ -268,6 +268,9 @@ namespace EE::NodeGraph
         String                      m_name; // Optionally set name storage for renameable nodes
 
         EE_REFLECT( Hidden );
+        String                      m_floatingComment; // Valve stores a free text note per node
+
+        EE_REFLECT( Hidden );
         Float2                      m_canvasPosition = Float2( 0, 0 ); // Updated each frame
 
         Float2                      m_size = Float2( 0, 0 ); // Updated each frame (its the actual rendered size in canvas units)
